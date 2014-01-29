@@ -28,36 +28,28 @@ template allSatisfyBinary(alias F, T...)
     }
 }
 
-template staticSwitchBind(S, T...)
+template staticBind2(S, T...)
 {
     static if (T.length == 0)
     {
-        alias staticSwitchBind = TypeTuple!();
+        alias staticBind = TypeTuple!();
     }
     else static if (T.length == 1)
     {
-        alias staticSwitchBind = TypeTuple!(T[0], S);
+        alias staticBind = TypeTuple!(T[0], S);
     }
     else
     {
-        alias staticSwitchBind =
-            TypeTuple!(
-                staticSwitchBind!(S, T[ 0  .. $/2]),
-                staticSwitchBind!(S, T[$/2 .. $]));
+        alias staticBind = TypeTuple!(
+                staticBind!(S, T[ 0  .. $/2]),
+                staticBind!(S, T[$/2 .. $]));
     }
 }
 
-pragma(msg, staticSwitchBind!(int, Dummy));
-pragma(msg, allSatisfyBinary!(isOutputRange, staticSwitchBind!(int, Dummy)));
-pragma(msg, staticSwitchBind!(int, Dummy, Dummy));
-pragma(msg, allSatisfyBinary!(isOutputRange, staticSwitchBind!(int, Dummy, Dummy)));
-pragma(msg, staticSwitchBind!(int, Dummy, Dummy, Dummy));
-pragma(msg, allSatisfyBinary!(isOutputRange, staticSwitchBind!(int, Dummy, Dummy, Dummy)));
-
-void distribute(Range1, Ranges...)(Range1 input, Ranges output) 
-	if(isInputRange!Range1
-	&& allSatisfyBinary!(isOutputRange, 
-		staticSwitchBind!(ElementType!Range1, Ranges))
+void distribute(InputRange, OutputRanges...)(InputRange input, 
+		OutputRanges output) if(isInputRange!Range1 && 
+		allSatisfyBinary!(isOutputRange, 
+		staticBind2!(ElementType!InputRange, OutputRanges))
 	)
 {
 	foreach(it; input) {
@@ -89,13 +81,6 @@ struct SpecificOutputRange(T) {
 
 bool f(T, S)(S) {
 	return isOutputRange!(S, T);
-}
-
-unittest {
-	static assert(isOutputRange!(Dummy, int));
-	static assert(isOutputRange!(TypeTuple!(Dummy, int)));
-	//static assert(allSatisfy!(f!int, Dummy));
-	distribute(F(), Dummy(), Dummy());
 }
 
 void main() {
