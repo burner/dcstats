@@ -8,7 +8,9 @@ import std.uni : isWhite;
 import std.range : isForwardRange, lockstep;
 import std.format : format;
 import std.string : stripLeft, indexOf;
-import std.regex : ctRegex, match;
+import std.regex : ctRegex, match, regex, matchAll;
+
+import std.logger;
 
 ptrdiff_t stripLeftIdx(C)(C[] str) @safe pure 
 {
@@ -19,6 +21,12 @@ ptrdiff_t stripLeftIdx(C)(C[] str) @safe pure
     }
 
     return 0;
+}
+
+enum XmlTokenKind {
+	OpenClose,
+	Open,
+	Close
 }
 
 struct XmlToken {
@@ -33,6 +41,7 @@ public:
 
 	string name;
 	string[string] attributes;
+	XmlTokenKind kind;
 
 private:
 	ptrdiff_t readNameBeginIdx() pure {
@@ -49,14 +58,15 @@ private:
 	}
 
 	void readAttributes() {
-		auto re = ctRegex!"(\\w+)\\s=(\"\\w+\")";
-		auto m = data.match(re);
-		foreach(attr; m.captures) {
-			writefln("%s %s", attr[0], attr[1]);
+		foreach(attr; matchAll(data, re)) {
+			attributes[attr[1]] = attr[2];
+			//logF("%s %s %s", attr[1], attr[2], attr.post);
+			logF("%s %s %s", attr[1], attr[2], attr.post);
 		}
 	}
 
 	string data;
+	static auto re = ctRegex!("\\s*(\\w+)\\s*=\\s*\"(\\w+)\"\\s*");
 }
 
 struct XmlTokenRange(InputRange) {
@@ -154,9 +164,11 @@ unittest {
 }
 
 unittest {
-	string testString = "<hello world=\"foo\" args=\"bar\">";
+	string testString = "<hello zzz=\"ttt\" world=\"foo\" args=\"bar\">";
 	auto r = xmlTokenRange(testString);
 	foreach(it; r) {
-
+		foreach(key, value; it.attributes) {
+			writefln("%s %s", key, value);
+		}
 	}
 }
