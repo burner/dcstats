@@ -7,8 +7,10 @@ import std.stdio : writeln, writefln;
 import std.uni : isWhite;
 import std.range : isForwardRange, lockstep;
 import std.format : format;
-import std.string : stripLeft, indexOf;
+import std.string : stripLeft, indexOf, CaseSensitive;
 import std.regex : ctRegex, match, regex, matchAll;
+import std.traits : isSomeChar;
+import std.functional : binaryFun;
 
 import std.logger;
 
@@ -21,6 +23,63 @@ ptrdiff_t stripLeftIdx(C)(C[] str) @safe pure
     }
 
     return 0;
+}
+
+ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
+		CaseSensitive cs = CaseSensitive.yes) @safe pure
+    if (isSomeChar!Char && isForwardRange!R2 && 
+		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
+{
+	foreach (i, dchar c; haystack)
+	{
+		foreach (dchar o; needles)
+		{
+			if (c == o)
+			{
+				return i;
+			}	
+		}
+	}
+
+	return -1;
+}
+
+unittest {
+	ptrdiff_t i = "helloWorld".indexOfAny("Wr");
+	assert(i == 5);
+}
+
+ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
+		const size_t startIdx, CaseSensitive cs = CaseSensitive.yes) @safe pure
+    if (isSomeChar!Char && isForwardRange!R2 && 
+		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
+
+    if (startIdx < haystack.length)
+    {
+        ptrdiff_t foundIdx = indexOfAny(haystack[startIdx .. $], needles, cs);
+        if (foundIdx != -1)
+        {
+            return foundIdx + cast(ptrdiff_t)startIdx;
+        }
+    }
+    return -1;
+}
+
+void eatWhitespace(C)(ref C c) @safe pure {
+	auto idx = stripLeftIdx(c);
+	c = c[idx .. $];
+}
+
+string eatKey(C)(ref C c) @safe pure {
+	auto ws = c.indexOfAny("\t \n\r");
+	auto 
+
+}
+
+unittest {
+	auto s = "    foo";
+	eatWhitespace(s);
+	assert(equal(s, "foo"));
 }
 
 enum XmlTokenKind {
@@ -57,11 +116,20 @@ private:
 		this.name = this.data[readNameBeginIdx() .. this.readNameEndIdx()];
 	}
 
-	void readAttributes() {
+	/*void readAttributes() {
 		foreach(attr; matchAll(data, re)) {
 			attributes[attr[1]] = attr[2];
 			//logF("%s %s %s", attr[1], attr[2], attr.post);
 			logF("%s %s %s", attr[1], attr[2], attr.post);
+		}
+	}*/
+
+	void readAttributes() {
+		auto toConsum = data;
+		while(!toConsum.empty) {
+			eatWhitespace(toConsum);
+
+			string key = "";
 		}
 	}
 
