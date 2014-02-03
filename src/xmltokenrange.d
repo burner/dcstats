@@ -2,13 +2,15 @@ module xmltokenrange;
 
 //import std.array : Appender, appender, front, empty, popFront;
 import std.array;
-import std.algorithm : equal;
+import std.algorithm : equal, count;
+import std.conv : to;
+import std.encoding : index;
 import std.stdio : writeln, writefln;
 import std.uni : isWhite;
 import std.range : isForwardRange, lockstep;
 import std.format : format;
 import std.string : stripLeft, indexOf, CaseSensitive;
-import std.regex : ctRegex, match, regex, matchAll;
+import std.regex : ctRegex, match, regex, matchAll, popFrontN;
 import std.traits : isSomeChar;
 import std.functional : binaryFun;
 
@@ -30,14 +32,31 @@ ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
     if (isSomeChar!Char && isForwardRange!R2 && 
 		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
 {
-	foreach (i, dchar c; haystack)
-	{
-		foreach (dchar o; needles)
+    if (cs == CaseSensitive.yes)
+    {
+		foreach (ptrdiff_t i, dchar c; haystack)
 		{
-			if (c == o)
+			foreach (dchar o; needles)
 			{
-				return i;
-			}	
+				if (c == o)
+				{
+					return i;
+				}	
+			}
+		}
+	}
+	else
+	{
+		foreach (ptrdiff_t i, dchar c; haystack)
+		{
+			dchar cLow = std.uni.toLower(c);
+			foreach (dchar o; needles)
+			{
+				if (cLow == o)
+				{
+					return i;
+				}	
+			}
 		}
 	}
 
@@ -47,13 +66,15 @@ ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
 unittest {
 	ptrdiff_t i = "helloWorld".indexOfAny("Wr");
 	assert(i == 5);
+	i = "öällo world".indexOfAny("lo ");
+	assert(i == 4, to!string(i));
 }
 
 ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
 		const size_t startIdx, CaseSensitive cs = CaseSensitive.yes) @safe pure
     if (isSomeChar!Char && isForwardRange!R2 && 
 		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
-
+{	
     if (startIdx < haystack.length)
     {
         ptrdiff_t foundIdx = indexOfAny(haystack[startIdx .. $], needles, cs);
@@ -70,19 +91,68 @@ void eatWhitespace(C)(ref C c) @safe pure {
 	c = c[idx .. $];
 }
 
-string eatKey(C)(ref C c) @safe pure {
-	auto ws = c.indexOfAny("\t \n\r");
-	auto 
-
-}
-
 unittest {
 	auto s = "    foo";
 	eatWhitespace(s);
 	assert(equal(s, "foo"));
 }
 
+string eatKey(C)(ref C c) @safe pure {
+	eatWhitespace(c);
+	auto endOfKey = c.indexOfAny("=\t \n\r");
+	assert(endOfKey != -1);
+	string name = c[0..endOfKey];
+	c = c[endOfKey .. $];
+	if(c[0] == '=') {
+		c = c[endOfKey+1 .. $];
+	} else {
+		eatWhitespace(c);
+		c = c[1 .. $];
+	}
+	
+	return name;
+}
+
+unittest {
+	string input = "   \tfoo = ";
+	auto n = eatKey(input);
+	assert(n == "foo", n);
+	assert(input == " ", "\"" ~ input ~ "\"");
+}
+
+string eatAttri(C)(ref C c) @safe pure {
+	eatWhitespace(c);
+	auto firstTick = c.indexOf('"');
+	assert(firstTick != -1);
+	c = c[firstTick+1 .. $];
+
+	size_t i = 0;
+	while(true) {
+		if(i > 0 && c[i] == '"' && c[i-1] != '\\') {
+			break;
+		} else if(i == 0 && c[i] == '"') {
+			break;
+		} else {
+			++i;
+		}
+	}
+
+	auto attri = c[0 .. i];
+	c = c[i+1 .. $];
+	eatWhitespace(c);
+
+	return attri;
+}
+
+unittest {
+	string input = " \"asdf\"  ";
+	string attri = eatAttri(input);
+	assert(attri == "asdf", "\"" ~ attri ~ "\" " ~ input);
+	assert(input.empty, "\"" ~ input ~ "\"");
+}
+
 enum XmlTokenKind {
+	Invalid,
 	OpenClose,
 	Open,
 	Close
@@ -96,11 +166,11 @@ public:
 		this.readAttributes();
 	}
 
-	alias data this;
+	alias name this;
 
 	string name;
 	string[string] attributes;
-	XmlTokenKind kind;
+	XmlTokenKind kind = XmlTokenKind.Invalid;
 
 private:
 	ptrdiff_t readNameBeginIdx() pure {
@@ -109,11 +179,12 @@ private:
 
 	ptrdiff_t readNameEndIdx() pure {
 		auto lowIdx = readNameBeginIdx();
-		return this.data[lowIdx .. $].indexOf(' ')+lowIdx;
+		return this.data[lowIdx .. $].indexOfAny(" >/")+lowIdx;
 	}
 
 	void readName() pure {
 		this.name = this.data[readNameBeginIdx() .. this.readNameEndIdx()];
+		this.data = this.data[this.readNameEndIdx() .. $];
 	}
 
 	/*void readAttributes() {
@@ -125,11 +196,26 @@ private:
 	}*/
 
 	void readAttributes() {
-		auto toConsum = data;
-		while(!toConsum.empty) {
-			eatWhitespace(toConsum);
+		while(!this.data.empty) {
+			eatWhitespace(this.data);
 
-			string key = "";
+			auto end = this.data.indexOf("/>");
+			if(end == 0) {
+				this.kind = XmlTokenKind.Close;
+				break;
+			}
+
+			end = this.data.indexOf(">");
+			if(end == 0) {
+				break;
+			}
+
+			eatWhitespace(this.data);
+			string key = eatKey(this.data);
+			eatWhitespace(this.data);
+			string attri = eatAttri(this.data);
+			eatWhitespace(this.data);
+
 		}
 	}
 
@@ -215,20 +301,19 @@ unittest {
 }
 
 unittest {
-	string testString = "<hello world>";
+	string testString = "<hello>";
 	auto r = xmlTokenRange(testString);
-	assert(r.front == testString);
 	assert(r.front.name == "hello", r.front.name);
 }
 
 unittest {
-	string testString = "<hello world>";
-	string testString2 = "<hello robert>";
+	string testString = "<hello>";
+	string testString2 = "<hello>";
 	auto test = testString ~ testString2;
 	auto r = xmlTokenRange(test);
-	foreach(a, b; lockstep(r, [testString, testString2])) {
+	/*foreach(a, b; lockstep(r, [testString, testString2])) {
 		assert(a == b, format("%s %s", a, b));
-	}
+	}*/
 }
 
 unittest {
