@@ -9,7 +9,7 @@ import std.stdio : writeln, writefln;
 import std.uni : isWhite;
 import std.range : isForwardRange, lockstep;
 import std.format : format;
-import std.string : stripLeft, indexOf, CaseSensitive;
+import std.string : stripLeft, indexOf, CaseSensitive, strip;
 import std.regex : ctRegex, match, regex, matchAll, popFrontN;
 import std.traits : isSomeChar;
 import std.functional : binaryFun;
@@ -18,12 +18,19 @@ import std.logger;
 
 ptrdiff_t stripLeftIdx(C)(C[] str) @safe pure 
 {
+	bool foundSome = false;
     foreach (i, dchar c; str)
     {
-        if (!std.uni.isWhite(c))
+        if(!std.uni.isWhite(c)) {
             return i;
+		} else {
+			foundSome = true;
+		}
     }
 
+	if(foundSome) {
+		return str.length;
+	}
     return 0;
 }
 
@@ -87,8 +94,16 @@ ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
 }
 
 void eatWhitespace(C)(ref C c) @safe pure {
-	auto idx = stripLeftIdx(c);
-	c = c[idx .. $];
+	static if(is(C == string)) {
+		c = c.strip();
+	} else {
+		auto idx = stripLeftIdx(c);
+		if(idx == c.length) {
+			c = c[idx-1 .. $];
+		} else {
+			c = c[idx .. $];
+		}
+	}
 }
 
 unittest {
@@ -117,7 +132,7 @@ unittest {
 	string input = "   \tfoo = ";
 	auto n = eatKey(input);
 	assert(n == "foo", n);
-	assert(input == " ", "\"" ~ input ~ "\"");
+	assert(input == "", "\"" ~ input ~ "\"");
 }
 
 string eatAttri(C)(ref C c) @safe pure {
@@ -138,7 +153,10 @@ string eatAttri(C)(ref C c) @safe pure {
 	}
 
 	auto attri = c[0 .. i];
-	c = c[i+1 .. $];
+	c = c[i .. $];
+	if(c[0] == '"') {
+		c = c[1 .. $];
+	}
 	eatWhitespace(c);
 
 	return attri;
