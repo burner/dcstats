@@ -7,6 +7,8 @@ import std.xml;
 import std.range : isInputRange, isOutputRange, ElementType;
 import std.typetuple : allSatisfy, TypeTuple;
 
+import xmltokenrange;
+
 template allSatisfyBinary(alias F, T...)
 {
     static if (T.length == 0)
@@ -84,9 +86,8 @@ bool f(T, S)(S) {
 }
 
 void main() {
-	/*auto doc = new Document(
-		//get("http://forum.dlang.org/group/digitalmars.D").idup
-		get("http://www.digitalmars.com/d/archives/digitalmars/D/announce/StackOverflow_Chat_Room_22769.html").idup
-	);*/
+	auto s =
+		get("http://www.digitalmars.com/d/archives/digitalmars/D/announce/StackOverflow_Chat_Room_22769.html").idup;
+	writeln(s);
 
 }

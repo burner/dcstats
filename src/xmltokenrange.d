@@ -34,6 +34,58 @@ ptrdiff_t stripLeftIdx(C)(C[] str) @safe pure
     return 0;
 }
 
+ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, R2 needles,
+		const size_t startIdx, CaseSensitive cs = CaseSensitive.yes) @safe pure
+    if (isSomeChar!Char && isForwardRange!R2 && 
+		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
+{	
+    if (startIdx < haystack.length)
+    {
+        ptrdiff_t foundIdx = indexOfNone(haystack[startIdx .. $], needles, cs);
+        if (foundIdx != -1)
+        {
+            return foundIdx + cast(ptrdiff_t)startIdx;
+        }
+    }
+    return -1;
+}
+
+ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, R2 needles,
+		CaseSensitive cs = CaseSensitive.yes) @safe pure
+    if (isSomeChar!Char && isForwardRange!R2 && 
+		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
+{
+    if (cs == CaseSensitive.yes)
+    {
+		foreach (ptrdiff_t i, dchar c; haystack)
+		{
+			foreach (dchar o; needles)
+			{
+				if (c != o)
+				{
+					return i;
+				}	
+			}
+		}
+	}
+	else
+	{
+		foreach (ptrdiff_t i, dchar c; haystack)
+		{
+			dchar cLow = std.uni.toLower(c);
+			foreach (dchar o; needles)
+			{
+				if (cLow != o)
+				{
+					return i;
+				}	
+			}
+		}
+	}
+
+	return -1;
+}
+
 ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
 		CaseSensitive cs = CaseSensitive.yes) @safe pure
     if (isSomeChar!Char && isForwardRange!R2 && 
@@ -173,6 +225,8 @@ enum XmlTokenKind {
 	Invalid,
 	OpenClose,
 	Open,
+	Text,
+	Comment,
 	Close
 }
 
@@ -180,6 +234,7 @@ struct XmlToken {
 public:
 	this(string d) {
 		this.data = d;
+		this.kind = this.getKind();
 		this.readName();
 		this.readAttributes();
 	}
@@ -191,6 +246,10 @@ public:
 	XmlTokenKind kind = XmlTokenKind.Invalid;
 
 private:
+	XmlTokenKind getKind() {
+		return XmlTokenKind.Invalid;
+	}
+
 	ptrdiff_t readNameBeginIdx() pure {
 		return this.data[1 .. $].stripLeftIdx()+1;
 	}
@@ -238,7 +297,7 @@ private:
 	}
 
 	string data;
-	static auto re = ctRegex!("\\s*(\\w+)\\s*=\\s*\"(\\w+)\"\\s*");
+	//static auto re = ctRegex!("\\s*(\\w+)\\s*=\\s*\"(\\w+)\"\\s*");
 }
 
 struct XmlTokenRange(InputRange) {
