@@ -6,3 +6,5 @@ all: $(SRC)
 
 clean:
 	rm dcstas
+
+#-I../Tango-D2 ../Tango-D2/libtango-dmd.a

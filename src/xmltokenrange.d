@@ -123,6 +123,7 @@ ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
 }
 
 unittest {
+	log();
 	ptrdiff_t i = "helloWorld".indexOfAny("Wr");
 	assert(i == 5);
 	i = "öällo world".indexOfAny("lo ");
@@ -159,6 +160,7 @@ void eatWhitespace(C)(ref C c) @safe pure {
 }
 
 unittest {
+	log();
 	auto s = "    foo";
 	eatWhitespace(s);
 	assert(equal(s, "foo"));
@@ -181,6 +183,7 @@ string eatKey(C)(ref C c) @safe pure {
 }
 
 unittest {
+	log();
 	string input = "   \tfoo = ";
 	auto n = eatKey(input);
 	assert(n == "foo", n);
@@ -215,6 +218,7 @@ string eatAttri(C)(ref C c) @safe pure {
 }
 
 unittest {
+	log();
 	string input = " \"asdf\"  ";
 	string attri = eatAttri(input);
 	assert(attri == "asdf", "\"" ~ attri ~ "\" " ~ input);
@@ -235,8 +239,13 @@ public:
 	this(string d) {
 		this.data = d;
 		this.kind = this.getKind();
-		this.readName();
-		this.readAttributes();
+		if(this.kind == XmlTokenKind.Open || this.kind ==
+				XmlTokenKind.OpenClose || this.kind) {
+			this.readName();
+		}
+		if(this.kind == XmlTokenKind.Open) {
+			this.readAttributes();
+		}
 	}
 
 	alias name this;
@@ -247,7 +256,21 @@ public:
 
 private:
 	XmlTokenKind getKind() {
-		return XmlTokenKind.Invalid;
+		//return XmlTokenKind.Invalid;
+		if(this.data[0] != '<') {
+			return XmlTokenKind.Text;
+		} else if(this.data[0] == '<') {
+			if(this.data[1] == '/') {
+				return XmlTokenKind.Close;
+			} else if(this.data[1] == '!') {
+				return XmlTokenKind.Comment;
+			} else if(this.data[$-2] == '/') {
+				return XmlTokenKind.OpenClose;
+			} else {
+				return XmlTokenKind.Open;
+			}
+		} 
+		assert(false);
 	}
 
 	ptrdiff_t readNameBeginIdx() pure {
@@ -316,7 +339,14 @@ public:
 	}
 
 	@property void popFront() {
-		readFromRange();
+		eatWhiteSpace();
+		if(!input_.empty()) {
+			dchar firstNonBlank = input_.front;
+			if(firstNonBlank == '<') {
+				readFromRange();
+			} else {
+			}
+		}
 	}
 
 	@property bool empty() const pure {
@@ -332,7 +362,6 @@ private:
 		store_.clear();
 
 		size_t numCrocos = 0;
-		eatWhiteSpace();
 		
 		dchar prev = '\0';
 
@@ -373,17 +402,21 @@ auto xmlTokenRange(InputRange)(InputRange input) {
    	return ret;	
 }
 
+/+
 unittest {
+	log();
 	static assert(isForwardRange!(XmlTokenRange!string));
 }
 
 unittest {
+	log();
 	string testString = "<hello>";
 	auto r = xmlTokenRange(testString);
 	assert(r.front.name == "hello", r.front.name);
 }
 
 unittest {
+	log();
 	string testString = "<hello>";
 	string testString2 = "<hello>";
 	auto test = testString ~ testString2;
@@ -394,6 +427,7 @@ unittest {
 }
 
 unittest {
+	log();
 	string testString = "<hello zzz=\"ttt\" world=\"foo\" args=\"bar\">";
 	auto r = xmlTokenRange(testString);
 	foreach(it; r) {
@@ -401,4 +435,4 @@ unittest {
 			writefln("%s %s", key, value);
 		}
 	}
-}
+}+/

@@ -2,10 +2,15 @@ module main;
 
 import std.net.curl : get;
 import std.stdio : writeln;
-import std.xml;
+//import std.xml;
 
 import std.range : isInputRange, isOutputRange, ElementType;
 import std.typetuple : allSatisfy, TypeTuple;
+
+import std.logger;
+
+//import tango.text.xml.PullParser;
+//import tango.text.xml.Document;
 
 import xmltokenrange;
 
@@ -86,8 +91,15 @@ bool f(T, S)(S) {
 }
 
 void main() {
-	auto s =
+	log("main");
+	/*auto s =
 		get("http://www.digitalmars.com/d/archives/digitalmars/D/announce/StackOverflow_Chat_Room_22769.html").idup;
-	writeln(s);
 
+	auto itr = new Document!(char)();
+	try {
+		itr.parse(s);
+	} catch(Exception e) {
+		writeln(s[550..600]);
+		writeln(e.toString());
+	}*/
 }
