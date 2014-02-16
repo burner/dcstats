@@ -9,10 +9,11 @@ import std.stdio : writeln, writefln;
 import std.uni : isWhite;
 import std.range : isForwardRange, lockstep;
 import std.format : format;
-import std.string : stripLeft, indexOf, CaseSensitive, strip;
+import std.string : stripLeft, stripRight, indexOf, CaseSensitive, strip;
 import std.regex : ctRegex, match, regex, matchAll, popFrontN;
 import std.traits : isSomeChar;
 import std.functional : binaryFun;
+import std.algorithm : min;
 
 import std.logger;
 
@@ -166,27 +167,21 @@ unittest {
 	assert(equal(s, "foo"));
 }
 
-string eatKey(C)(ref C c) @safe pure {
+string eatKey(C)(ref C c) @trusted pure {
 	eatWhitespace(c);
-	auto endOfKey = c.indexOfAny("=\t \n\r");
+	auto endOfKey = c.indexOf("=");
 	assert(endOfKey != -1);
 	string name = c[0..endOfKey];
-	c = c[endOfKey .. $];
-	if(c[0] == '=') {
-		c = c[endOfKey+1 .. $];
-	} else {
-		eatWhitespace(c);
-		c = c[1 .. $];
-	}
+	c = c[endOfKey+1 .. $];
 	
-	return name;
+	return name.strip();
 }
 
 unittest {
 	log();
 	string input = "   \tfoo = ";
 	auto n = eatKey(input);
-	assert(n == "foo", n);
+	assert(n == "foo", "\"" ~ n ~ "\"");
 	assert(input == "", "\"" ~ input ~ "\"");
 }
 
@@ -287,25 +282,11 @@ private:
 		this.data = this.data[this.readNameEndIdx() .. $];
 	}
 
-	/*void readAttributes() {
-		foreach(attr; matchAll(data, re)) {
-			attributes[attr[1]] = attr[2];
-			//logF("%s %s %s", attr[1], attr[2], attr.post);
-			logF("%s %s %s", attr[1], attr[2], attr.post);
-		}
-	}*/
-
 	void readAttributes() {
 		while(!this.data.empty) {
 			eatWhitespace(this.data);
 
-			auto end = this.data.indexOf("/>");
-			if(end == 0) {
-				this.kind = XmlTokenKind.Close;
-				break;
-			}
-
-			end = this.data.indexOf(">");
+			auto end = this.data.indexOf(">");
 			if(end == 0) {
 				break;
 			}
@@ -315,7 +296,7 @@ private:
 			eatWhitespace(this.data);
 			string attri = eatAttri(this.data);
 			eatWhitespace(this.data);
-
+			this.attributes[key] = attri;
 		}
 	}
 
@@ -402,7 +383,7 @@ auto xmlTokenRange(InputRange)(InputRange input) {
    	return ret;	
 }
 
-/+
+
 unittest {
 	log();
 	static assert(isForwardRange!(XmlTokenRange!string));
@@ -431,8 +412,9 @@ unittest {
 	string testString = "<hello zzz=\"ttt\" world=\"foo\" args=\"bar\">";
 	auto r = xmlTokenRange(testString);
 	foreach(it; r) {
+		log;
 		foreach(key, value; it.attributes) {
 			writefln("%s %s", key, value);
 		}
 	}
-}+/
+}

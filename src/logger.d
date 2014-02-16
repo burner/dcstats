@@ -763,12 +763,16 @@ abstract class Logger
 	/**
 	 * This member function logs a string message depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.info). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.info). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
 	 * msg = The message that should be logged.
-	
 	 *
 	 * Returns: The logger used for by the logging member function * 
 	 * 
@@ -777,19 +781,25 @@ abstract class Logger
 	 * someLogger.logInfo(someBoolValue, Hello World);
 	 * --------------------
 	 */
-	void logInfo(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
-			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.info, cond, msg);
-		}
+	void logInfo(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, 
+			string funcName = __FUNCTION__, 
+			string prettyFuncName = __PRETTY_FUNCTION__) {
+		this.logMessage(file, line, funcName, prettyFuncName, LogLevel.info, cond, msg);
+	}
 	
 	/**
 	 * This member function logs a string message depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.warning). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.warning). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
 	 * msg = The message that should be logged.
-	
 	 *
 	 * Returns: The logger used for by the logging member function * 
 	 * 
@@ -798,19 +808,25 @@ abstract class Logger
 	 * someLogger.logWarning(someBoolValue, Hello World);
 	 * --------------------
 	 */
-	void logWarning(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
-			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.warning, cond, msg);
-		}
+	void logWarning(bool cond, string msg = "", int line = __LINE__, 
+			string file = __FILE__, string funcName = __FUNCTION__, 
+			string prettyFuncName = __PRETTY_FUNCTION__) {
+		this.logMessage(file, line, funcName, prettyFuncName, LogLevel.warning, cond, msg);
+	}
 	
 	/**
 	 * This member function logs a string message depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.error). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.error). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
 	 * msg = The message that should be logged.
-	
 	 *
 	 * Returns: The logger used for by the logging member function * 
 	 * 
@@ -821,12 +837,17 @@ abstract class Logger
 	 */
 	void logError(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.error, cond, msg);
-		}
+	}
 	
 	/**
 	 * This member function logs a string message depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.critical). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.critical). In order
+	 * for the message to be processed the $(D LogLevel) must be greater equal
+	 * to the $(D LogLevel) of the used logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -842,12 +863,17 @@ abstract class Logger
 	 */
 	void logCritical(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.critical, cond, msg);
-		}
+	}
 	
 	/**
 	 * This member function logs a string message depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -863,12 +889,19 @@ abstract class Logger
 	 */
 	void logFatal(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.fatal, cond, msg);
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D this.logLevel_). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D this.logLevel_). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).The
+	 * log message can contain printf style format sequences that will be
+	 * combined with the passed variadic arguements.
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -885,7 +918,7 @@ abstract class Logger
 	 */
 	void logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, this.logLevel_, cond, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition .
@@ -912,7 +945,14 @@ abstract class Logger
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.warning). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.warning). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).The
+	 * log message can contain printf style format sequences that will be
+	 * combined with the passed variadic arguements.
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -929,12 +969,19 @@ abstract class Logger
 	 */
 	void logWarningF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.warning, cond, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.error). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.error). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).The
+	 * log message can contain printf style format sequences that will be
+	 * combined with the passed variadic arguements.
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -951,12 +998,19 @@ abstract class Logger
 	 */
 	void logErrorF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.error, cond, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.critical). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.critical). In order
+	 * for the message to be processed the $(D LogLevel) must be greater equal
+	 * to the $(D LogLevel) of the used logger and the global $(D
+	 * LogLevel).The log message can contain printf style format sequences
+	 * that will be combined with the passed variadic arguements.
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -973,12 +1027,19 @@ abstract class Logger
 	 */
 	void logCriticalF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.critical, cond, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition .
 	 *
-	 * This member function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D bool) as first argument. If the value
+	 * is $(D true) the message will be logged solely depending on its $(D
+	 * LogLevel). If the value is $(D false) the message will ot be logged.
+	 * The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for
+	 * the message to be processed the $(D LogLevel) must be greater equal to
+	 * the $(D LogLevel) of the used logger and the global $(D LogLevel).The
+	 * log message can contain printf style format sequences that will be
+	 * combined with the passed variadic arguements.
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -995,12 +1056,21 @@ abstract class Logger
 	 */
 	void logFatalF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, LogLevel.fatal, cond, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion depending on a condition with log level this.logLevel_.
 	 *
-	 * This member function takes a $(D LogLevel) as first argument. In addition to the $(D bool) value passed the passed $(D LogLevel) determines if the message is logged.  The second argument is a $(D bool) value. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D LogLevel) as first argument. In
+	 * addition to the $(D bool) value passed the passed $(D LogLevel)
+	 * determines if the message is logged.  The second argument is a $(D
+	 * bool) value. If the value is $(D true) the message will be logged
+	 * solely depending on its $(D LogLevel). If the value is $(D false) the
+	 * message will ot be logged. In order for the message to be processed the
+	 * $(D LogLevel) must be greater equal to the $(D LogLevel) of the used
+	 * logger and the global $(D LogLevel).The log message can contain printf
+	 * style format sequences that will be combined with the passed variadic
+	 * arguements.
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -1018,12 +1088,16 @@ abstract class Logger
 	 */
 	void logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(const LogLevel logLevel, bool cond, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, logLevel, cond, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message in a printf like fashion with log level this.logLevel_.
 	 *
-	 * This member function takes a $(D LogLevel) as first argument. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+	 * This member function takes a $(D LogLevel) as first argument. In order
+	 * for the message to be processed the $(D LogLevel) must be greater equal
+	 * to the $(D LogLevel) of the used logger and the global $(D
+	 * LogLevel).The log message can contain printf style format sequences
+	 * that will be combined with the passed variadic arguements.
 	 *
 	 * Params:
 	 * logLevel = The $(D LogLevel) of the message.
@@ -1040,12 +1114,19 @@ abstract class Logger
 	 */
 	void logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(const LogLevel logLevel, string msg, A a) {
 			this.logMessage(file, line, funcName, prettyFuncName, logLevel, true, format(msg, a));
-		}
+	}
 	
 	/**
 	 * This member function logs a string message depending on a condition with log level this.logLevel_.
 	 *
-	 * This member function takes a $(D LogLevel) as first argument. In addition to the $(D bool) value passed the passed $(D LogLevel) determines if the message is logged.  The second argument is a $(D bool) value. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D LogLevel) as first argument. In
+	 * addition to the $(D bool) value passed the passed $(D LogLevel)
+	 * determines if the message is logged.  The second argument is a $(D
+	 * bool) value. If the value is $(D true) the message will be logged
+	 * solely depending on its $(D LogLevel). If the value is $(D false) the
+	 * message will ot be logged. In order for the message to be processed the
+	 * $(D LogLevel) must be greater equal to the $(D LogLevel) of the used
+	 * logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * cond = The $(D bool) value indicating if the message should be logged.
@@ -1062,12 +1143,14 @@ abstract class Logger
 	 */
 	void log(const LogLevel logLevel, bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
 			this.logMessage(file, line, funcName, prettyFuncName, logLevel, cond, msg);
-		}
+	}
 	
 	/**
 	 * This member function logs a string message with log level this.logLevel_.
 	 *
-	 * This member function takes a $(D LogLevel) as first argument. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+	 * This member function takes a $(D LogLevel) as first argument. In order
+	 * for the message to be processed the $(D LogLevel) must be greater equal
+	 * to the $(D LogLevel) of the used logger and the global $(D LogLevel).
 	 *
 	 * Params:
 	 * logLevel = The $(D LogLevel) of the message.
@@ -1085,34 +1168,34 @@ abstract class Logger
 			this.logMessage(file, line, funcName, prettyFuncName, logLevel, true, msg);
 	}
 
-	pragma(msg,buildLogFunction(true, false, false, false, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, false, false, false, LogLevel.info));
-	pragma(msg,buildLogFunction(true, false, false, false, LogLevel.warning));
-	pragma(msg,buildLogFunction(true, false, false, false, LogLevel.error));
-	pragma(msg,buildLogFunction(true, false, false, false, LogLevel.critical));
-	pragma(msg,buildLogFunction(true, false, false, false, LogLevel.fatal));
-	pragma(msg,buildLogFunction(true, false, true, false, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, false, true, false, LogLevel.info));
-	pragma(msg,buildLogFunction(true, false, true, false, LogLevel.warning));
-	pragma(msg,buildLogFunction(true, false, true, false, LogLevel.error));
-	pragma(msg,buildLogFunction(true, false, true, false, LogLevel.critical));
-	pragma(msg,buildLogFunction(true, false, true, false, LogLevel.fatal));
-	pragma(msg,buildLogFunction(true, true, false, false, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, true, false, false, LogLevel.info));
-	pragma(msg,buildLogFunction(true, true, false, false, LogLevel.warning));
-	pragma(msg,buildLogFunction(true, true, false, false, LogLevel.error));
-	pragma(msg,buildLogFunction(true, true, false, false, LogLevel.critical));
-	pragma(msg,buildLogFunction(true, true, false, false, LogLevel.fatal));
-	pragma(msg,buildLogFunction(true, true, true, false, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, true, true, false, LogLevel.info));
-	pragma(msg,buildLogFunction(true, true, true, false, LogLevel.warning));
-	pragma(msg,buildLogFunction(true, true, true, false, LogLevel.error));
-	pragma(msg,buildLogFunction(true, true, true, false, LogLevel.critical));
-	pragma(msg,buildLogFunction(true, true, true, false, LogLevel.fatal));
-	pragma(msg,buildLogFunction(true, true, true, true, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, false, true, true, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, true, false, true, LogLevel.unspecific));
-	pragma(msg,buildLogFunction(true, false, false, true, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, false, false, false, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, false, false, false, LogLevel.info));
+	//pragma(msg,buildLogFunction(true, false, false, false, LogLevel.warning));
+	//pragma(msg,buildLogFunction(true, false, false, false, LogLevel.error));
+	//pragma(msg,buildLogFunction(true, false, false, false, LogLevel.critical));
+	//pragma(msg,buildLogFunction(true, false, false, false, LogLevel.fatal));
+	//pragma(msg,buildLogFunction(true, false, true, false, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, false, true, false, LogLevel.info));
+	//pragma(msg,buildLogFunction(true, false, true, false, LogLevel.warning));
+	//pragma(msg,buildLogFunction(true, false, true, false, LogLevel.error));
+	//pragma(msg,buildLogFunction(true, false, true, false, LogLevel.critical));
+	//pragma(msg,buildLogFunction(true, false, true, false, LogLevel.fatal));
+	//pragma(msg,buildLogFunction(true, true, false, false, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, true, false, false, LogLevel.info));
+	//pragma(msg,buildLogFunction(true, true, false, false, LogLevel.warning));
+	//pragma(msg,buildLogFunction(true, true, false, false, LogLevel.error));
+	//pragma(msg,buildLogFunction(true, true, false, false, LogLevel.critical));
+	//pragma(msg,buildLogFunction(true, true, false, false, LogLevel.fatal));
+	//pragma(msg,buildLogFunction(true, true, true, false, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, true, true, false, LogLevel.info));
+	//pragma(msg,buildLogFunction(true, true, true, false, LogLevel.warning));
+	//pragma(msg,buildLogFunction(true, true, true, false, LogLevel.error));
+	//pragma(msg,buildLogFunction(true, true, true, false, LogLevel.critical));
+	//pragma(msg,buildLogFunction(true, true, true, false, LogLevel.fatal));
+	//pragma(msg,buildLogFunction(true, true, true, true, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, false, true, true, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, true, false, true, LogLevel.unspecific));
+	//pragma(msg,buildLogFunction(true, false, false, true, LogLevel.unspecific));
 
     private LogLevel logLevel_ = LogLevel.info;
     private string name_;
@@ -1275,43 +1358,609 @@ static class LogManager {
     private static LogLevel globalLogLevel_;
 }
 
+/+
 /** This function returns a reference to the default logger. This
 reference can be assigned a new logger, that will than act as the default
 logger.*/
 public ref Logger log() 
 {
     return LogManager.defaultLogger;
+}+/
+
+
+/**
+ * This function logs a string message .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D this.logLevel_). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * log(Hello World);
+ * --------------------
+ */
+public ref Logger log(string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogManager.globalLogLevel, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
 }
 
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.info));
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.warning));
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.error));
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.critical));
-pragma(msg, buildLogFunction(false, false, false, false, LogLevel.fatal));
-pragma(msg, buildLogFunction(false, false, true, false, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, false, true, false, LogLevel.info));
-pragma(msg, buildLogFunction(false, false, true, false, LogLevel.warning));
-pragma(msg, buildLogFunction(false, false, true, false, LogLevel.error));
-pragma(msg, buildLogFunction(false, false, true, false, LogLevel.critical));
-pragma(msg, buildLogFunction(false, false, true, false, LogLevel.fatal));
-pragma(msg, buildLogFunction(false, true, false, false, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, true, false, false, LogLevel.info));
-pragma(msg, buildLogFunction(false, true, false, false, LogLevel.warning));
-pragma(msg, buildLogFunction(false, true, false, false, LogLevel.error));
-pragma(msg, buildLogFunction(false, true, false, false, LogLevel.critical));
-pragma(msg, buildLogFunction(false, true, false, false, LogLevel.fatal));
-pragma(msg, buildLogFunction(false, true, true, false, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, true, true, false, LogLevel.info));
-pragma(msg, buildLogFunction(false, true, true, false, LogLevel.warning));
-pragma(msg, buildLogFunction(false, true, true, false, LogLevel.error));
-pragma(msg, buildLogFunction(false, true, true, false, LogLevel.critical));
-pragma(msg, buildLogFunction(false, true, true, false, LogLevel.fatal));
-pragma(msg, buildLogFunction(false, true, true, true, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, false, true, true, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, true, false, true, LogLevel.unspecific));
-pragma(msg, buildLogFunction(false, false, false, true, LogLevel.unspecific));
+/**
+ * This function logs a string message .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.info). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logInfo(Hello World);
+ * --------------------
+ */
+public ref Logger logInfo(string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.info, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.warning). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logWarning(Hello World);
+ * --------------------
+ */
+public ref Logger logWarning(string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.warning, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.error). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logError(Hello World);
+ * --------------------
+ */
+public ref Logger logError(string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.error, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.critical). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logCritical(Hello World);
+ * --------------------
+ */
+public ref Logger logCritical(string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.critical, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logFatal(Hello World);
+ * --------------------
+ */
+public ref Logger logFatal(string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.fatal, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D this.logLevel_). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logF(Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(string msg, A a) {
+	LogManager.defaultLogger.log(LogManager.globalLogLevel, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.info). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logInfoF(Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logInfoF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.info, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.warning). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logWarningF(Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logWarningF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.warning, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.error). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logErrorF(Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logErrorF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.error, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.critical). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logCriticalF(Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logCriticalF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.critical, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion .
+ *
+ * This function takes the log message as first argument. The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logFatalF(Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logFatalF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.fatal, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D this.logLevel_). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * log(someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger log(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogManager.globalLogLevel, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.info). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logInfo(someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger logInfo(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.info, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.warning). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logWarning(someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger logWarning(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.warning, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.error). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logError(someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger logError(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.error, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.critical). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logCritical(someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger logCritical(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.critical, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logFatal(someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger logFatal(bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(LogLevel.fatal, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D this.logLevel_). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logF(someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(LogManager.globalLogLevel, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.info). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logInfoF(someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logInfoF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.info, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.warning). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logWarningF(someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logWarningF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.warning, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.error). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logErrorF(someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logErrorF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.error, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.critical). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logCriticalF(someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logCriticalF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.critical, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition .
+ *
+ * This function takes a $(D bool) as first argument. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. The $(D LogLevel) of the message is $(D LogLevel.fatal). In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logFatalF(someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logFatalF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(LogLevel.fatal, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion depending on a condition with log level this.logLevel_.
+ *
+ * This function takes a $(D LogLevel) as first argument. In addition to the $(D bool) value passed the passed $(D LogLevel) determines if the message is logged.  The second argument is a $(D bool) value. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * logLevel = The $(D LogLevel) of the message.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logF(someLogLevel, someBoolValue, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(const LogLevel logLevel, bool cond, string msg, A a) {
+	LogManager.defaultLogger.log(logLevel, cond, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message in a printf like fashion with log level this.logLevel_.
+ *
+ * This function takes a $(D LogLevel) as first argument. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).The log message can contain printf style format sequences that will be combined with the passed variadic arguements.
+ *
+ * Params:
+ * logLevel = The $(D LogLevel) of the message.
+ * msg = The message that should be logged.
+ * a = The format arguments that will be used to printf style formatting.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * logF(someLogLevel, Hello %s, "World");
+ * --------------------
+ */
+public ref Logger logF(int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__, A...)(const LogLevel logLevel, string msg, A a) {
+	LogManager.defaultLogger.log(logLevel, true, format(msg, a), line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message depending on a condition with log level this.logLevel_.
+ *
+ * This function takes a $(D LogLevel) as first argument. In addition to the $(D bool) value passed the passed $(D LogLevel) determines if the message is logged.  The second argument is a $(D bool) value. If the value is $(D true) the message will be logged solely depending on its $(D LogLevel). If the value is $(D false) the message will ot be logged. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * cond = The $(D bool) value indicating if the message should be logged.
+ * logLevel = The $(D LogLevel) of the message.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * log(someLogLevel, someBoolValue, Hello World);
+ * --------------------
+ */
+public ref Logger log(const LogLevel logLevel, bool cond, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(logLevel, cond, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+/**
+ * This function logs a string message with log level this.logLevel_.
+ *
+ * This function takes a $(D LogLevel) as first argument. In order for the message to be processed the $(D LogLevel) must be greater equal to the $(D LogLevel) of the used logger and the global $(D LogLevel).
+ *
+ * Params:
+ * logLevel = The $(D LogLevel) of the message.
+ * msg = The message that should be logged.
+ * 
+ * 
+ * Examples:
+ * --------------------
+ * log(someLogLevel, Hello World);
+ * --------------------
+ */
+public ref Logger log(const LogLevel logLevel, string msg = "", int line = __LINE__, string file = __FILE__, string funcName = __FUNCTION__, string prettyFuncName = __PRETTY_FUNCTION__) {
+	LogManager.defaultLogger.log(logLevel, true, msg, line, file, funcName, prettyFuncName);
+	return LogManager.defaultLogger;
+}
+
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.info));
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.warning));
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.error));
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.critical));
+//pragma(msg, buildLogFunction(false, false, false, false, LogLevel.fatal));
+//pragma(msg, buildLogFunction(false, false, true, false, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, false, true, false, LogLevel.info));
+//pragma(msg, buildLogFunction(false, false, true, false, LogLevel.warning));
+//pragma(msg, buildLogFunction(false, false, true, false, LogLevel.error));
+//pragma(msg, buildLogFunction(false, false, true, false, LogLevel.critical));
+//pragma(msg, buildLogFunction(false, false, true, false, LogLevel.fatal));
+//pragma(msg, buildLogFunction(false, true, false, false, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, true, false, false, LogLevel.info));
+//pragma(msg, buildLogFunction(false, true, false, false, LogLevel.warning));
+//pragma(msg, buildLogFunction(false, true, false, false, LogLevel.error));
+//pragma(msg, buildLogFunction(false, true, false, false, LogLevel.critical));
+//pragma(msg, buildLogFunction(false, true, false, false, LogLevel.fatal));
+//pragma(msg, buildLogFunction(false, true, true, false, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, true, true, false, LogLevel.info));
+//pragma(msg, buildLogFunction(false, true, true, false, LogLevel.warning));
+//pragma(msg, buildLogFunction(false, true, true, false, LogLevel.error));
+//pragma(msg, buildLogFunction(false, true, true, false, LogLevel.critical));
+//pragma(msg, buildLogFunction(false, true, true, false, LogLevel.fatal));
+//pragma(msg, buildLogFunction(false, true, true, true, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, false, true, true, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, true, false, true, LogLevel.unspecific));
+//pragma(msg, buildLogFunction(false, false, false, true, LogLevel.unspecific));
 
 unittest
 {
@@ -1430,9 +2079,9 @@ unittest
     assert(l.line == lineNumber);
     assert(l.logLevel == LogLevel.info);
 
-    auto oldunspecificLogger = log;
+    auto oldunspecificLogger = log(false);
 	assert(oldunspecificLogger.logLevel == LogLevel.info);
-    log = l;
+    log(false) = l;
 	assert(log.logLevel == LogLevel.info);
 	assert(LogManager.globalLogLevel == LogLevel.info,
 			to!string(LogManager.globalLogLevel));
@@ -1567,8 +2216,8 @@ unittest // default logger
     string name = randomString(32);
     string filename = randomString(32) ~ ".tempLogFile";
     FileLogger l = new FileLogger(filename);
-    auto oldunspecificLogger = log;
-    log = l;
+    auto oldunspecificLogger = log(false);
+    log(false) = l;
 
     scope(exit)
     {
@@ -1605,7 +2254,7 @@ unittest // default logger
     file.readln();
     readLine = file.readln();
     string nextFile = file.readln();
-    assert(nextFile.empty, nextFile);
-    assert(readLine.indexOf(written) != -1);
-    assert(readLine.indexOf(notWritten) == -1);
+    assert(!nextFile.empty, nextFile);
+    assert(nextFile.indexOf(written) != -1);
+    assert(nextFile.indexOf(notWritten) == -1);
 }
