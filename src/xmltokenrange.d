@@ -2,12 +2,12 @@ module xmltokenrange;
 
 //import std.array : Appender, appender, front, empty, popFront;
 import std.array;
-import std.algorithm : equal, count;
+import std.algorithm : equal, count, countUntil;
 import std.conv : to;
 import std.encoding : index;
 import std.stdio : writeln, writefln;
-import std.uni : isWhite;
-import std.range : isForwardRange, lockstep;
+import std.uni : isWhite, isNumber;
+import std.range : isInputRange, lockstep;
 import std.format : format;
 import std.string : stripLeft, stripRight, indexOf, CaseSensitive, strip;
 import std.regex : ctRegex, match, regex, matchAll, popFrontN;
@@ -35,9 +35,9 @@ ptrdiff_t stripLeftIdx(C)(C[] str) @safe pure
     return 0;
 }
 
-ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, R2 needles,
+ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, const(R2)[] needles,
 		const size_t startIdx, CaseSensitive cs = CaseSensitive.yes) @safe pure
-    if (isSomeChar!Char && isForwardRange!R2 && 
+    if (isSomeChar!Char && isSomeChar!R2 && 
 		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
 {	
     if (startIdx < haystack.length)
@@ -51,9 +51,9 @@ ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, R2 needles,
     return -1;
 }
 
-ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, R2 needles,
+ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, const(R2)[] needles,
 		CaseSensitive cs = CaseSensitive.yes) @safe pure
-    if (isSomeChar!Char && isForwardRange!R2 && 
+    if (isSomeChar!Char && isSomeChar!R2 && 
 		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
 {
     if (cs == CaseSensitive.yes)
@@ -87,9 +87,9 @@ ptrdiff_t indexOfNone(Char,R2)(const(Char)[] haystack, R2 needles,
 	return -1;
 }
 
-ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
+ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, const(R2)[] needles,
 		CaseSensitive cs = CaseSensitive.yes) @safe pure
-    if (isSomeChar!Char && isForwardRange!R2 && 
+    if (isSomeChar!Char && isSomeChar!R2 && 
 		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
 {
     if (cs == CaseSensitive.yes)
@@ -124,16 +124,15 @@ ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
 }
 
 unittest {
-	log();
 	ptrdiff_t i = "helloWorld".indexOfAny("Wr");
 	assert(i == 5);
 	i = "öällo world".indexOfAny("lo ");
 	assert(i == 4, to!string(i));
 }
 
-ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, R2 needles,
+ptrdiff_t indexOfAny(Char,R2)(const(Char)[] haystack, const(R2)[] needles,
 		const size_t startIdx, CaseSensitive cs = CaseSensitive.yes) @safe pure
-    if (isSomeChar!Char && isForwardRange!R2 && 
+    if (isSomeChar!Char && isSomeChar!R2 && 
 		is(typeof(binaryFun!"a == b"(haystack.front, needles.front))))
 {	
     if (startIdx < haystack.length)
@@ -161,7 +160,6 @@ void eatWhitespace(C)(ref C c) @safe pure {
 }
 
 unittest {
-	log();
 	auto s = "    foo";
 	eatWhitespace(s);
 	assert(equal(s, "foo"));
@@ -170,7 +168,7 @@ unittest {
 string eatKey(C)(ref C c) @trusted pure {
 	eatWhitespace(c);
 	auto endOfKey = c.indexOf("=");
-	assert(endOfKey != -1);
+	assert(endOfKey != -1, c);
 	string name = c[0..endOfKey];
 	c = c[endOfKey+1 .. $];
 	
@@ -178,42 +176,49 @@ string eatKey(C)(ref C c) @trusted pure {
 }
 
 unittest {
-	log();
 	string input = "   \tfoo = ";
 	auto n = eatKey(input);
 	assert(n == "foo", "\"" ~ n ~ "\"");
 	assert(input == "", "\"" ~ input ~ "\"");
 }
 
-string eatAttri(C)(ref C c) @safe pure {
+string eatAttri(C)(ref C c) @trusted pure {
 	eatWhitespace(c);
-	auto firstTick = c.indexOf('"');
-	assert(firstTick != -1);
-	c = c[firstTick+1 .. $];
+	auto firstTick = c.indexOfAny("\"'");
+	string attri;
+	if(firstTick != -1) {
+		dchar foundString = c[firstTick];
+		c = c[firstTick+1 .. $];
 
-	size_t i = 0;
-	while(true) {
-		if(i > 0 && c[i] == '"' && c[i-1] != '\\') {
-			break;
-		} else if(i == 0 && c[i] == '"') {
-			break;
-		} else {
-			++i;
+		size_t i = 0;
+		while(true) {
+			if(i > 0 && c[i] == foundString && c[i-1] != '\\') {
+				break;
+			} else if(i == 0 && c[i] == foundString) {
+				break;
+			} else {
+				++i;
+			}
 		}
-	}
 
-	auto attri = c[0 .. i];
-	c = c[i .. $];
-	if(c[0] == '"') {
-		c = c[1 .. $];
+		attri = c[0 .. i];
+		c = c[i .. $];
+		if(c[0] == foundString) {
+			c = c[1 .. $];
+		}
+		eatWhitespace(c);
+	} else {
+		auto i = c.countUntil!(isNumber);
+		attri = c[0 .. i];
+		debug writeln(__LINE__, attri);
+		c = c[i+1 .. $];
+		eatWhitespace(c);
 	}
-	eatWhitespace(c);
 
 	return attri;
 }
 
 unittest {
-	log();
 	string input = " \"asdf\"  ";
 	string attri = eatAttri(input);
 	assert(attri == "asdf", "\"" ~ attri ~ "\" " ~ input);
@@ -251,7 +256,7 @@ public:
 
 private:
 	XmlTokenKind getKind() {
-		//return XmlTokenKind.Invalid;
+		assert(this.data.length);
 		if(this.data[0] != '<') {
 			return XmlTokenKind.Text;
 		} else if(this.data[0] == '<') {
@@ -278,8 +283,14 @@ private:
 	}
 
 	void readName() pure {
-		this.name = this.data[readNameBeginIdx() .. this.readNameEndIdx()];
-		this.data = this.data[this.readNameEndIdx() .. $];
+		auto low = this.readNameBeginIdx();
+		auto high = this.readNameEndIdx();
+		debug writefln("%u %u", low, high);
+		assert(low < this.data.length, this.data);
+		assert(high < this.data.length, this.data);
+		assert(low <= high, this.data);
+		this.name = this.data[low .. high];
+		this.data = this.data[high .. $];
 	}
 
 	void readAttributes() {
@@ -291,9 +302,11 @@ private:
 				break;
 			}
 
+			writeln(this.data);
 			eatWhitespace(this.data);
 			string key = eatKey(this.data);
 			eatWhitespace(this.data);
+			//writeln(key);
 			string attri = eatAttri(this.data);
 			eatWhitespace(this.data);
 			this.attributes[key] = attri;
@@ -312,58 +325,75 @@ public:
 
 	@property void input(InputRange i) {
 		input_ = i;
-		readFromRange();
+		this.readFromRange();
 	}
 
 	@property auto front() {
-		return XmlToken(store_.data);
+		return XmlToken(this.store_.data());
 	}
 
 	@property void popFront() {
-		eatWhiteSpace();
-		if(!input_.empty()) {
-			dchar firstNonBlank = input_.front;
-			if(firstNonBlank == '<') {
-				readFromRange();
-			} else {
-			}
-		}
+		this.store_.clear();
+		readFromRange();
 	}
 
 	@property bool empty() const pure {
-		return this.store_.data.empty() && std.array.empty(input_);
-	}
-
-	@property XmlTokenRange!InputRange save() pure {
-		return this;
+		return this.store_.data().empty && std.array.empty(this.input_);
 	}
 
 private: 
-	void readFromRange() {
-		store_.clear();
+	//size_t sliceIdx;
 
-		size_t numCrocos = 0;
-		
-		dchar prev = '\0';
-
+	void equalCrocos() {
 		dchar it;
+		dchar prev = '\0';
+		size_t numCrocos = 0;
+		//foreach(it; this.input_) {
 		for(; !input_.empty(); input_.popFront()) {
 			it = input_.front();
-
-			store_.put(it);
-
+			this.store_.put(it);
+	
 			if(it == '<' && prev != '\\') {
 				++numCrocos;
 			} else if(it == '>' && prev != '\\') {
 				--numCrocos;
 			}
-
+	
 			prev = it;
-
+	
 			if(!numCrocos) {
 				input_.popFront();
 				break;
 			}
+		}
+	}
+
+	void eatTillCroco() {
+		dchar it;
+		dchar prev = '\0';
+		for(; !input_.empty(); input_.popFront()) {
+			if(it == '<' && prev != '\\') {
+				break;
+			}
+			it = input_.front();
+			this.store_.put(it);
+		}
+	}
+
+	void readFromRange() {
+		eatWhiteSpace();
+		if(this.input_.empty) {
+			return;
+		}
+
+		if(this.input_.front == '<') {
+			log();
+			equalCrocos();
+			return;
+		} else {
+			log();
+			eatTillCroco();
+			return;
 		}
 	}
 
@@ -385,36 +415,27 @@ auto xmlTokenRange(InputRange)(InputRange input) {
 
 
 unittest {
-	log();
-	static assert(isForwardRange!(XmlTokenRange!string));
+	static assert(isInputRange!(XmlTokenRange!string));
 }
 
 unittest {
-	log();
 	string testString = "<hello>";
 	auto r = xmlTokenRange(testString);
 	assert(r.front.name == "hello", r.front.name);
 }
 
 unittest {
-	log();
 	string testString = "<hello>";
 	string testString2 = "<hello>";
 	auto test = testString ~ testString2;
 	auto r = xmlTokenRange(test);
-	/*foreach(a, b; lockstep(r, [testString, testString2])) {
-		assert(a == b, format("%s %s", a, b));
-	}*/
 }
 
 unittest {
-	log();
 	string testString = "<hello zzz=\"ttt\" world=\"foo\" args=\"bar\">";
-	auto r = xmlTokenRange(testString);
-	foreach(it; r) {
-		log;
+	foreach(it; xmlTokenRange(testString)) {
 		foreach(key, value; it.attributes) {
-			writefln("%s %s", key, value);
+			//writefln("%s %s", key, value);
 		}
 	}
 }

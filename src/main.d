@@ -4,7 +4,9 @@ import std.net.curl : get;
 import std.stdio : writeln;
 //import std.xml;
 
-import std.range : isInputRange, isOutputRange, ElementType;
+import std.range;
+import std.string;
+import std.algorithm;
 import std.typetuple : allSatisfy, TypeTuple;
 
 import std.logger;
@@ -92,14 +94,15 @@ bool f(T, S)(S) {
 
 void main() {
 	log("main");
-	/*auto s =
-		get("http://www.digitalmars.com/d/archives/digitalmars/D/announce/StackOverflow_Chat_Room_22769.html").idup;
-
-	auto itr = new Document!(char)();
-	try {
-		itr.parse(s);
-	} catch(Exception e) {
-		writeln(s[550..600]);
-		writeln(e.toString());
-	}*/
+	auto s =
+		get("http://www.digitalmars.com/d/archives/digitalmars/D/Why_is_int_implicitly_convertible_to_ulong_224201.html").idup;
+	auto sp = s.splitLines();
+	auto x = xmlTokenRange(s);
+	size_t line = 0;
+	foreach(a, b; lockstep(x,sp)) {
+		writefln("%u %s", line++, b);
+		foreach(key, value; a.attributes) {
+			writefln("%s %s", key, value);
+		}
+	}
 }
