@@ -95,14 +95,15 @@ bool f(T, S)(S) {
 void main() {
 	log("main");
 	auto s =
-		get("http://www.digitalmars.com/d/archives/digitalmars/D/Why_is_int_implicitly_convertible_to_ulong_224201.html").idup;
+		//get("http://www.digitalmars.com/d/archives/digitalmars/D/Why_is_int_implicitly_convertible_to_ulong_224201.html").idup;
+		get("http://www.digitalmars.com/d/archives/digitalmars/D/index.html").idup;
 	auto sp = s.splitLines();
 	auto x = xmlTokenRange(s);
 	size_t line = 0;
 	foreach(a, b; lockstep(x,sp)) {
 		writefln("%u %s", line++, b);
 		foreach(key, value; a.attributes) {
-			writefln("%s %s", key, value);
+			//writefln("%s %s", key, value);
 		}
 	}
 }

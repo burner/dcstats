@@ -210,7 +210,6 @@ string eatAttri(C)(ref C c) @trusted pure {
 	} else {
 		auto i = c.countUntil!(isNumber);
 		attri = c[0 .. i];
-		debug writeln(__LINE__, attri);
 		c = c[i+1 .. $];
 		eatWhitespace(c);
 	}
@@ -285,7 +284,6 @@ private:
 	void readName() pure {
 		auto low = this.readNameBeginIdx();
 		auto high = this.readNameEndIdx();
-		debug writefln("%u %u", low, high);
 		assert(low < this.data.length, this.data);
 		assert(high < this.data.length, this.data);
 		assert(low <= high, this.data);
@@ -302,7 +300,6 @@ private:
 				break;
 			}
 
-			writeln(this.data);
 			eatWhitespace(this.data);
 			string key = eatKey(this.data);
 			eatWhitespace(this.data);
@@ -387,11 +384,9 @@ private:
 		}
 
 		if(this.input_.front == '<') {
-			log();
 			equalCrocos();
 			return;
 		} else {
-			log();
 			eatTillCroco();
 			return;
 		}
