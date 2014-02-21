@@ -252,6 +252,7 @@ public:
 	string name;
 	string[string] attributes;
 	XmlTokenKind kind = XmlTokenKind.Invalid;
+	string data;
 
 private:
 	XmlTokenKind getKind() {
@@ -310,7 +311,6 @@ private:
 		}
 	}
 
-	string data;
 	//static auto re = ctRegex!("\\s*(\\w+)\\s*=\\s*\"(\\w+)\"\\s*");
 }
 
