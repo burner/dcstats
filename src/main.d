@@ -2,17 +2,12 @@ module main;
 
 import std.net.curl : get;
 import std.stdio : writeln;
-//import std.xml;
 
 import std.range;
 import std.string;
-import std.algorithm;
 import std.typetuple : allSatisfy, TypeTuple;
 
 import std.logger;
-
-//import tango.text.xml.PullParser;
-//import tango.text.xml.Document;
 
 import xmltokenrange;
 import dropuntil;
@@ -95,18 +90,13 @@ bool f(T, S)(S) {
 
 void main() {
 	log("main");
-	auto s =
-		//get("http://www.digitalmars.com/d/archives/digitalmars/D/Why_is_int_implicitly_convertible_to_ulong_224201.html").idup;
-		get("http://www.digitalmars.com/d/archives/digitalmars/D/index.html").idup;
+	auto s = get("http://www.digitalmars.com/d/archives/digitalmars/D/index.html").idup;
 	auto sp = s.splitLines();
-	auto x = xmlTokenRange(s).dropUntil!(a => a.kind == XmlTokenKind.Text &&
-			a.data == "news.digitalmars.com - digitalmars.D");
-	writeln(x);
-	/*size_t line = 0;
-	foreach(a, b; lockstep(x,sp)) {
-		writefln("%u %s", line++, b);
-		foreach(key, value; a.attributes) {
-			//writefln("%s %s", key, value);
+	auto x = xmlTokenRange(s).dropUntil!(a => a.kind == XmlTokenKind.Open &&
+			"id" in a.attributes && a.attributes["id"] == "content");
+	foreach(a; x) {
+		if(a.kind == XmlTokenKind.Open && a.attributes.length != 0) {
+			writeln(a.attributes);
 		}
-	}*/
+	}
 }

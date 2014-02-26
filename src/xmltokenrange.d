@@ -274,7 +274,11 @@ private:
 	}
 
 	ptrdiff_t readNameBeginIdx() pure {
-		return this.data[1 .. $].stripLeftIdx()+1;
+		if(this.data.length > 0) {
+			return this.data[1 .. $].stripLeftIdx()+1;
+		} else {
+			return 0;
+		}
 	}
 
 	ptrdiff_t readNameEndIdx() pure {
@@ -285,11 +289,14 @@ private:
 	void readName() pure {
 		auto low = this.readNameBeginIdx();
 		auto high = this.readNameEndIdx();
-		assert(low < this.data.length, this.data);
-		assert(high < this.data.length, this.data);
-		assert(low <= high, this.data);
-		this.name = this.data[low .. high];
-		this.data = this.data[high .. $];
+		assert(low <= this.data.length, this.data);
+		assert(high <= this.data.length, this.data);
+		if(low < high) {
+			this.name = this.data[low .. high];
+			this.data = this.data[high .. $];
+		} else if(!this.data.empty) {
+			this.data.popFront();
+		}
 	}
 
 	void readAttributes() {
@@ -348,7 +355,6 @@ private:
 		//foreach(it; this.input_) {
 		for(; !input_.empty(); input_.popFront()) {
 			it = input_.front();
-			this.store_.put(it);
 	
 			if(it == '<' && prev != '\\') {
 				++numCrocos;
@@ -359,9 +365,11 @@ private:
 			prev = it;
 	
 			if(!numCrocos) {
+				this.store_.put(it);
 				input_.popFront();
 				break;
 			}
+			this.store_.put(it);
 		}
 	}
 
@@ -369,11 +377,12 @@ private:
 		dchar it;
 		dchar prev = '\0';
 		for(; !input_.empty(); input_.popFront()) {
+			it = input_.front();
 			if(it == '<' && prev != '\\') {
 				break;
 			}
-			it = input_.front();
 			this.store_.put(it);
+			prev = it;
 		}
 	}
 
@@ -408,6 +417,16 @@ auto xmlTokenRange(InputRange)(InputRange input) {
    	return ret;	
 }
 
+unittest {
+	auto s = "some fun string<>";
+	auto r = xmlTokenRange(s);
+
+	auto f = r.front();
+	assert(f.kind == XmlTokenKind.Text);
+	r.popFront();
+	f = r.front();
+	assert(f.kind == XmlTokenKind.Open, to!string(f.kind));
+}
 
 unittest {
 	static assert(isInputRange!(XmlTokenRange!string));
